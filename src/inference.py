@@ -64,7 +64,6 @@ def input_fn(request_body, request_content_type: str) -> pd.DataFrame:
                 
             instances = payload["instances"]
             
-            # --- TAMBAHKAN CHECKPOINT INI ---
             # Cek jika panjang baris tidak sama dengan jumlah feature_names
             if len(instances[0]) != len(feature_names):
                 logger.error(f"Mismatch kolom! Diharapkan: {len(feature_names)}, Diterima: {len(instances[0])}")
@@ -74,7 +73,7 @@ def input_fn(request_body, request_content_type: str) -> pd.DataFrame:
                     logger.error(f"Data tambahan (fitur ke-24 dst): {instances[0][len(feature_names):]}")
                 else:
                     logger.error(f"Kolom yang kurang: {feature_names[len(instances[0]):]}")
-            # --------------------------------
+
             logger.info(f"Feature names count: {len(feature_names)}")
             logger.info(f"Received row count: {len(instances[0])}")
             logger.info(f"Received row data: {instances[0]}")
@@ -94,11 +93,11 @@ def predict_fn(input_data: pd.DataFrame, pipeline) -> dict:
         from data_preprocessor import DataPreprocessor
         preprocessor = DataPreprocessor()
         
-        # 1. Jalankan langkah Clean Data
+        #1. clean data
         logger.info("Mengeksekusi preprocessor.clean_data()...")
         cleaned_data = preprocessor.clean_data(input_data)
         
-        # 2. Jalankan langkah Feature Engineering
+        # 2. Feature Engineering
         logger.info("Mengeksekusi preprocessor.feature_engineering()...")
         featured_data = preprocessor.feature_engineering(cleaned_data)
         
@@ -115,7 +114,6 @@ def predict_fn(input_data: pd.DataFrame, pipeline) -> dict:
                 logger.error(f"Kolom hilang dari input: {missing}")
                 logger.info(f"Kolom yang ada di data: {actual}")
                 raise ValueError(f"Kolom hilang: {missing}")
-        # -------------------------------------------
         
         logger.info(f"Daftar kolom final yang dikirim ke model: {list(featured_data.columns)}")
         
