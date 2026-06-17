@@ -6,7 +6,7 @@ set -eu
 GIT_REPO="https://github.com/NysaSetiawan/projekakhirmd.git"
 
 SUBFOLDER=""                
-APP_FILE="streamlit_app.py"  
+APP_FILE="streamlit_app1.py"  
 ENDPOINT_NAME="credit-score-endpointv28"
 
 REGION="us-east-1"
